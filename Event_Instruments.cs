@@ -44,5 +44,6 @@ registerOutputEvent("fxDTSBrick", "setSongPhrase", "int 0 19 0\tstring 200 255",
 registerOutputEvent("fxDTSBrick", "stopPlaying");
 
 registerInputEvent("fxDTSBrick", "onPhraseEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
+registerInputEvent("fxDTSBrick", "onPhraseLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
 registerInputEvent("fxDTSBrick", "onSongEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
 registerInputEvent("fxDTSBrick", "onSongLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
