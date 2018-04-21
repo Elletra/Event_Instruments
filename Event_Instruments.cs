@@ -2,6 +2,21 @@ function InstrumentsServer::fixEventPhrase(%this, %phrase) {
   return strReplace(%phrase, "!", ";");
 }
 
+function InstrumentsServer::getInstrumentHash(%this, %name) {
+  %hash = $Instruments::Server::NameToHash[%name];
+
+  if (%hash $= "") {
+    %crc = getStringCRC(%name);
+    %truncateLength = %crc >= 0 ? 6 : 7;  // Need to account for the minus symbol in negative numbers
+    %hash = getSubStr(%crc, 0, %truncateLength);
+
+    $Instruments::Server::NameToHash[%name] = %hash;
+    $Instruments::Server::HashToName[%hash] = %name;
+  }
+
+  return %hash;
+}
+
 function InstrumentsServer::validateInstrumentIndex(%this, %instrumentIndex) {
   if (_strEmpty(%instrumentIndex)) {
     return false;
@@ -33,7 +48,7 @@ for (%i = %count - 1; %i >= 0; %i--) {
     continue;
   }
 
-  %list = %list SPC %instrument SPC %i;
+  %list = %list SPC %instrument SPC InstrumentsServer.getInstrumentHash(%instrument);
 }
 
 registerOutputEvent("fxDTSBrick", "playNote", %list TAB "string 64 120", 0);

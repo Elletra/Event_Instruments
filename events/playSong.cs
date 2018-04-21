@@ -1,9 +1,9 @@
-function fxDTSBrick::playSong(%this, %instrumentIndex, %song) {
-  if (!InstrumentsServer.validateInstrumentIndex(%instrumentIndex)) {
+function fxDTSBrick::playSong(%this, %instrumentHash, %song) {
+  %instrument = $Instruments::Server::HashToName[%instrumentHash];
+
+  if (%instrument $= "") {
     return;
   }
-
-  %instrument = InstrumentsServer.name(%instrumentIndex);
 
   if (%this.isPlayingInstrument) {
     %this.stopPlaying();

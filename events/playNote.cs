@@ -1,9 +1,9 @@
-function fxDTSBrick::playNote(%this, %instrumentIndex, %note) {
-  if (!InstrumentsServer.validateInstrumentIndex(%instrumentIndex)) {
+function fxDTSBrick::playNote(%this, %instrumentHash, %note) {
+  %instrument = $Instruments::Server::HashToName[%instrumentHash];
+
+  if (%instrument $= "") {
     return;
   }
-
-  %instrument = InstrumentsServer.name(%instrumentIndex);
 
   if (%this.isPlayingInstrument) {
     %this.stopPlaying();
@@ -13,12 +13,12 @@ function fxDTSBrick::playNote(%this, %instrumentIndex, %note) {
   InstrumentsServer.playNote(%this, %note, %instrument);
 }
 
-function fxDTSBrick::playRandomNote(%this, %instrumentIndex) {
-  if (!InstrumentsServer.validateInstrumentIndex(%instrumentIndex)) {
+function fxDTSBrick::playRandomNote(%this, %instrumentHash) {
+  %instrument = $Instruments::Server::HashToName[%instrumentHash];
+
+  if (%instrument $= "") {
     return;
   }
-
-  %instrument = InstrumentsServer.name(%instrumentIndex);
 
   if (%this.isPlayingInstrument) {
     %this.stopPlaying();
