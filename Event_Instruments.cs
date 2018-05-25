@@ -38,27 +38,31 @@ exec("./events/playSong.cs");
 exec("./packages.cs");
 
 
-%list = "list";
-%count = InstrumentsServer.instrumentCount;
+function InstrumentsServer::initEvents(%this) {
+  %list = "list";
+  %count = InstrumentsServer.instrumentCount;
 
-for (%i = %count - 1; %i >= 0; %i--) {
-  %instrument = InstrumentsServer.name(%i);
+  for (%i = %count - 1; %i >= 0; %i--) {
+    %instrument = InstrumentsServer.name(%i);
 
-  if (_strEmpty(%instrument)) {
-    continue;
+    if (_strEmpty(%instrument)) {
+      continue;
+    }
+
+    %list = %list SPC %instrument SPC InstrumentsServer.getInstrumentHash(%instrument);
   }
 
-  %list = %list SPC %instrument SPC InstrumentsServer.getInstrumentHash(%instrument);
+  registerOutputEvent("fxDTSBrick", "playNote", %list TAB "string 64 120", 0);
+  registerOutputEvent("fxDTSBrick", "playRandomNote", %list, 0);
+  registerOutputEvent("fxDTSBrick", "playPhrase", %list TAB "string 200 255", 0);
+  registerOutputEvent("fxDTSBrick", "playSong", %list TAB "string 200 255", 0);
+  registerOutputEvent("fxDTSBrick", "setSongPhrase", "int 0 19 0\tstring 200 255", 0);
+  registerOutputEvent("fxDTSBrick", "stopPlaying");
+
+  registerInputEvent("fxDTSBrick", "onPhraseEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
+  registerInputEvent("fxDTSBrick", "onPhraseLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
+  registerInputEvent("fxDTSBrick", "onSongEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
+  registerInputEvent("fxDTSBrick", "onSongLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
 }
 
-registerOutputEvent("fxDTSBrick", "playNote", %list TAB "string 64 120", 0);
-registerOutputEvent("fxDTSBrick", "playRandomNote", %list, 0);
-registerOutputEvent("fxDTSBrick", "playPhrase", %list TAB "string 200 255", 0);
-registerOutputEvent("fxDTSBrick", "playSong", %list TAB "string 200 255", 0);
-registerOutputEvent("fxDTSBrick", "setSongPhrase", "int 0 19 0\tstring 200 255", 0);
-registerOutputEvent("fxDTSBrick", "stopPlaying");
-
-registerInputEvent("fxDTSBrick", "onPhraseEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
-registerInputEvent("fxDTSBrick", "onPhraseLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
-registerInputEvent("fxDTSBrick", "onSongEnd", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
-registerInputEvent("fxDTSBrick", "onSongLoop", "Self fxDTSBrick" TAB "Player Player" TAB "Client GameConnection" TAB "MiniGame MiniGame");
+InstrumentsServer.initEvents();
