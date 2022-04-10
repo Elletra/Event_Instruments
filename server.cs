@@ -1,4 +1,4 @@
-if ($AddOn__System_Instruments == 1) {
+if (isFunction("isAddOnEnabled") && isAddOnEnabled("System_Instruments")) {
   if (InstrumentsServer.instrumentCount > 0) {
     exec("./Event_Instruments.cs");
   }
